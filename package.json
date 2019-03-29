@@ -25,7 +25,7 @@
         "browserify-single-file": "^0.3.0",
         "express": "^4.13.4",
         "express-handlebars": "^2.0.0",
-        "jquery": "^2.2.1",
+        "jquery": ">=3.0.0",
         "mongodb": "^2.2.31",
         "react": "^0.14.7",
         "react-dom": "^0.14.7",
