@@ -1,0 +1,9 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"module": "amd",
+		"jsx": "react",
+		"sourceMap": true,
+		"skipLibCheck": true
+	}
+}

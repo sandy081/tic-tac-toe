@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Tic Tac Toe</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+	<link rel="stylesheet" type="text/css" media="screen" href="//cdn.rawgit.com/Lukas-W/font-linux/v0.3/assets/font-linux.css"/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.20/require.min.js"></script>
+	<script>
+		requirejs.config({
+			baseUrl: '/src',
+			paths: {
+				jquery: '//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min',
+				popper: 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.2/umd/popper.min',
+				bootstrap: 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min',
+				contextmenu: '//cdnjs.cloudflare.com/ajax/libs/bootstrap-contextmenu/0.3.3/bootstrap-contextmenu.min',
+				clipboard: '//cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.5/clipboard.min',
+				react: '//cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.min',
+				'react-dom': '//cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.min',
+				moment: '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min',
+				lodash: '//cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min'
+			},
+			shim: {
+				bootstrap: {
+					deps: ['jquery', 'popper']
+				},
+				contextmenu: {
+					deps: ['bootstrap'],
+					exports: 'null'
+				},
+				clipboard: {},
+				jquery: {
+					exports: '$'
+				}
+			}
+		});
+	</script>
+	<script>
+		require(['app', 'popper'], function (app, popper) {
+			window.Popper = popper;
+			require(['bootstrap'], function () {
+				app.create();
+			});
+		});
+	</script> {{{ body }}}
+</head>
+
+<body>
+	<div id="container" />
+</body>
+
+</html>
