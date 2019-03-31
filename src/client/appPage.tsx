@@ -1,6 +1,8 @@
 import * as React from 'react';
 
-export class AppPage extends React.Component<void, void> {
+export class AppPage extends React.Component<void, TicTacToeProperties> {
+
+	private regPage: Registeration;
 
 	render() {
 		return (
@@ -9,12 +11,12 @@ export class AppPage extends React.Component<void, void> {
 					<div>Tic Tac Toe</div>
 				</div>
 				<div>
-					<TicTacToe player1={{ name: 'Sandeep', points: 0 }} player2={{ name: 'Sushmi', points: 0 }} />
+					{this.state ? <TicTacToe player1={this.state.player1} player2={this.state.player2} />
+						: <Registeration onDidRegister={(player1, player2) => this.setState({ player1, player2 })} />}
 				</div>
 			</div>
 		);
 	}
-
 }
 
 interface Player {
@@ -38,6 +40,36 @@ interface TicTacToeState {
 	currentTurn: PlayerState,
 	ticTacToe: PlayerState[][];
 	strike: { row: number, column: number }[];
+}
+
+class Registeration extends React.Component<{ onDidRegister: (player1: Player, player2: Player) => void }, void> {
+
+	private input1: HTMLInputElement;
+	private input2: HTMLInputElement;
+
+	render() {
+		return (
+			<div>
+				<div style={{ display: 'flex', justifyContent: 'center', fontFamily: 'verdana', fontSize: '16pt' }}>
+					<div>
+						<div style={{ display: 'flex', marginTop: '10px' }}>
+							<div style={{ marginRight: '20px' }}>Player 1:</div>
+							<input ref={input => { this.input1 = input }} />
+						</div>
+						<div style={{ display: 'flex', marginTop: '10px' }}>
+							<div style={{ marginRight: '20px' }}>Player 2:</div>
+							<input ref={input => { this.input2 = input }} />
+						</div>
+					</div>
+				</div>
+				<div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
+					<div className='button' style={{ fontSize: '20pt', display: 'inline-block', width: '200px', textAlign: 'center', marginLeft: '40px' }} onClick={() => this.props.onDidRegister({ name: this.input1.value, points: 0 }, { name: this.input2.value, points: 0 })}>
+						Start
+					</div>
+				</div>
+			</div>
+		)
+	}
 }
 
 
@@ -134,7 +166,7 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 	private renderButtons(): JSX.Element {
 		if (this.state.strike.length || this.isDrawn()) {
 			return (
-				<div className='button' style={{ fontSize: '20pt' }} onClick={() => { this.resetState(this.props); this.setState(this.state)}}>
+				<div className='button' style={{ fontSize: '20pt' }} onClick={() => { this.resetState(this.props); this.setState(this.state) }}>
 					New Game
 				</div>
 			);
