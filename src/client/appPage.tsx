@@ -52,6 +52,7 @@ interface PlayerState extends Player {
 }
 
 interface TicTacToeState {
+	starter: PlayerState;
 	player1: PlayerState,
 	player2: PlayerState,
 	currentTurn: PlayerState,
@@ -94,10 +95,10 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 
 	constructor(props: TicTacToeProperties) {
 		super(props);
-		this.resetState(props);
+		this.resetState(props, props.player1);
 	}
 
-	private resetState(props: TicTacToeProperties): void {
+	private resetState(props: TicTacToeProperties, turn: Player): void {
 		const player1: PlayerState = {
 			name: props.player1.name,
 			points: props.player1.points,
@@ -110,10 +111,12 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 			className: 'player2',
 			symbol: 'O'
 		}
+		const currentTurn = player1.name === turn.name ? player1 : player2
 		this.state = {
 			player1,
 			player2,
-			currentTurn: player1,
+			currentTurn,
+			starter: currentTurn,
 			ticTacToe: [
 				[null, null, null],
 				[null, null, null],
@@ -124,7 +127,7 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 	}
 
 	componentWillReceiveProps(nextProps: TicTacToeProperties): void {
-		this.resetState(nextProps);
+		this.resetState(nextProps, nextProps.player1);
 	}
 
 	render() {
@@ -183,7 +186,7 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 	private renderButtons(): JSX.Element {
 		if (this.state.strike.length || this.isDrawn()) {
 			return (
-				<div className='button' style={{ fontSize: '20pt' }} onClick={() => { this.resetState(this.props); this.setState(this.state) }}>
+				<div className='button' style={{ fontSize: '20pt' }} onClick={() => { this.resetState(this.props, this.state.currentTurn === this.state.player1 ? this.state.player2 : this.state.player1); this.setState(this.state) }}>
 					New Game
 				</div>
 			);
@@ -276,6 +279,7 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 		}
 		if (this.state.strike.length) {
 			this.state.currentTurn.points++;
+			savePlayers([this.state.currentTurn]);
 		} else {
 			this.state.currentTurn = this.state.player1 === this.state.currentTurn ? this.state.player2 : this.state.player1;
 		}
