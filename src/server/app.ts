@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import * as path from 'path';
 import * as exphbs from 'express-handlebars';
+import { Players } from './players';
 
 const app = express();
 
@@ -23,6 +24,8 @@ app.use((req, res, next) => {
 app.get('/', (req: express.Request, res: express.Response) => {
 	res.render('index');
 });
+
+app.use(new Players().route());
 
 // Statics
 app.use('/src', express.static(path.join(__dirname, '..', '..', 'out', 'client')));

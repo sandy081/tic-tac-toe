@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class AppPage extends React.Component<void, TicTacToeProperties> {
+export class AppPage extends React.Component<{ players: Player[] }, TicTacToeProperties> {
 
 	private regPage: Registeration;
 
@@ -12,14 +12,31 @@ export class AppPage extends React.Component<void, TicTacToeProperties> {
 				</div>
 				<div>
 					{this.state ? <TicTacToe player1={this.state.player1} player2={this.state.player2} />
-						: <Registeration onDidRegister={(player1, player2) => this.setState({ player1, player2 })} />}
+						: <Registeration onDidRegister={(player1, player2) => this.addPlayers(player1, player2)} />}
 				</div>
 			</div>
 		);
 	}
+
+	private addPlayers(player1: Player, player2: Player) {
+		const existingPlayer1 = this.props.players.filter(({ name }) => name === player1.name)[0];
+		if (existingPlayer1) {
+			player1 = existingPlayer1;
+		} else {
+			this.props.players.push(player1);
+		}
+		const existingPlayer2 = this.props.players.filter(({ name }) => name === player2.name)[0];
+		if (existingPlayer1) {
+			player2 = existingPlayer2;
+		} else {
+			this.props.players.push(player2);
+		}
+		savePlayers([player1, player2]);
+		this.setState({ player1, player2 });
+	}
 }
 
-interface Player {
+export interface Player {
 	name: string,
 	points: number
 }
@@ -151,8 +168,8 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 		}
 		if (this.isDrawn()) {
 			return (
-				<div>
-					`Game Drawn !!!`
+				<div style={{ fontSize: '30pt' }}>
+					Game Drawn !!!
 				</div>
 			);
 		}
@@ -268,4 +285,16 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 	private isDrawn(): boolean {
 		return this.state.ticTacToe.every(row => row.every(col => !!col));
 	}
+}
+
+function savePlayers(players: Player[]): JQueryPromise<void> {
+	const req: JQueryAjaxSettings = {
+		url: `/players`,
+		method: 'POST',
+		data: JSON.stringify(players),
+		headers: {
+			'Content-Type': 'application/json'
+		}
+	};
+	return $.ajax(req);
 }
