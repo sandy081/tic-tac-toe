@@ -1,0 +1,24 @@
+.tic-tac-toe .cell {
+	height: 100px;
+	width: 100px;
+	font-size: 40pt;
+	line-height: 100px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.tic-tac-toe .cell.value {
+	cursor: not-allowed;
+}
+
+.tic-tac-toe .cell.player1 {
+	color: rgb(10, 140, 10);
+}
+
+.tic-tac-toe .cell.player2 {
+	color: #1012a0;
+}
+
+.tic-tac-toe .cell.strike {
+	background-color: #46dcce
+}
