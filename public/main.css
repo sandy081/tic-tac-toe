@@ -1,3 +1,11 @@
+.tic-tac-toe .player1 {
+	color: rgb(197, 86, 112);
+}
+
+.tic-tac-toe .player2 {
+	color: #1012a0;
+}
+
 .tic-tac-toe .cell {
 	height: 100px;
 	width: 100px;
@@ -5,20 +13,26 @@
 	line-height: 100px;
 	text-align: center;
 	cursor: pointer;
+	user-select: none;
 }
 
-.tic-tac-toe .cell.value {
+.tic-tac-toe .cell.value,
+.tic-tac-toe .strike .cell {
 	cursor: not-allowed;
 }
 
-.tic-tac-toe .cell.player1 {
-	color: rgb(10, 140, 10);
-}
-
-.tic-tac-toe .cell.player2 {
-	color: #1012a0;
+.tic-tac-toe .strike .cell:not(.value) {
+	background-color: #cacaca;
 }
 
 .tic-tac-toe .cell.strike {
 	background-color: #46dcce
+}
+
+.tic-tac-toe .button {
+	cursor: pointer;
+	background-color: #cacaca;
+	padding: 8px;
+	border-radius: 4px;
+	color: #464a4e;
 }

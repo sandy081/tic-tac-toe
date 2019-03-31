@@ -79,60 +79,109 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 	}
 
 	render() {
-		const border = '8px solid #818182';
 		return (
 			<div>
-				<div style={{ display: 'flex', fontSize: '20pt' }}>
-					{[this.state.player1, this.state.player2].map(({ name, points }) => {
+				<div style={{ display: 'flex', fontSize: '20pt', fontFamily: 'verdana' }}>
+					{[this.state.player1, this.state.player2].map(player => {
 						return (
 							<div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-								{`${name}: ${points}`}
+								<div className={player.className} style={this.state.currentTurn === player ? { borderBottom: '4px solid rgb(10, 140, 10)' } : {}}>{`${player.name}: ${player.points}`}</div>
 							</div>
 						)
 					})}
 				</div>
 				<div style={{ marginTop: '100px' }}>
 					<div style={{ display: 'flex', justifyContent: 'center', /* backgroundColor: '#ffc107', */padding: '20px 0px' }}>
-						<div>
-							<div style={{ display: 'flex' }}>
-								<div className={this.getClassName(0, 0)} style={{ borderBottom: border, borderRight: border }} onClick={() => this.onClick(0, 0)}>
-									{this.state.ticTacToe[0] && this.state.ticTacToe[0][0] ? this.state.ticTacToe[0][0].symbol : ''}
-								</div>
-								<div className={this.getClassName(0, 1)} style={{ borderBottom: border, borderRight: border }} onClick={() => this.onClick(0, 1)}>
-									{this.state.ticTacToe[0] && this.state.ticTacToe[0][1] ? this.state.ticTacToe[0][1].symbol : ''}
-								</div>
+						{this.renderTicTacToeGrid()}
+					</div>
+				</div>
+				<div style={{ marginTop: '100px' }}>
+					<div style={{ display: 'flex', justifyContent: 'center', fontSize: '12pt' }}>
+						{this.renderStatus()}
+					</div>
+				</div>
+				<div style={{ marginTop: '20px' }}>
+					<div style={{ display: 'flex', justifyContent: 'center' }}>
+						{this.renderButtons()}
+					</div>
+				</div>
+			</div>
+		);
+	}
 
-								<div className={this.getClassName(0, 2)} style={{ borderBottom: border }} onClick={() => this.onClick(0, 2)}>
-									{this.state.ticTacToe[0] && this.state.ticTacToe[0][2] ? this.state.ticTacToe[0][2].symbol : ''}
-								</div>
-							</div>
-							<div style={{ display: 'flex' }}>
-								<div className={this.getClassName(1, 0)} style={{ borderBottom: border, borderRight: border }} onClick={() => this.onClick(1, 0)}>
-									{this.state.ticTacToe[1] && this.state.ticTacToe[1][0] ? this.state.ticTacToe[1][0].symbol : ''}
-								</div>
+	private renderStatus(): JSX.Element {
+		if (this.state.strike.length) {
+			return (
+				<div className={this.state.currentTurn.className} style={{ fontSize: '30pt' }}>
+					{`${this.state.currentTurn.name} Won !!!`}
+				</div>
+			);
+		}
+		if (this.isDrawn()) {
+			return (
+				<div>
+					`Game Drawn !!!`
+				</div>
+			);
+		}
+		return (
+			<div className={this.state.currentTurn.className}>
+				{`${this.state.currentTurn.name}'s Turn`}
+			</div>
+		);
+	}
 
-								<div className={this.getClassName(1, 1)} style={{ borderBottom: border, borderRight: border }} onClick={() => this.onClick(1, 1)}>
-									{this.state.ticTacToe[1] && this.state.ticTacToe[1][1] ? this.state.ticTacToe[1][1].symbol : ''}
-								</div>
+	private renderButtons(): JSX.Element {
+		if (this.state.strike.length || this.isDrawn()) {
+			return (
+				<div className='button' style={{ fontSize: '20pt' }} onClick={() => { this.resetState(this.props); this.setState(this.state)}}>
+					New Game
+				</div>
+			);
+		}
+		return null;
+	}
 
-								<div className={this.getClassName(1, 2)} style={{ borderBottom: border }} onClick={() => this.onClick(1, 2)}>
-									{this.state.ticTacToe[1] && this.state.ticTacToe[1][2] ? this.state.ticTacToe[1][2].symbol : ''}
-								</div>
-							</div>
-							<div style={{ display: 'flex' }}>
-								<div className={this.getClassName(2, 0)} style={{ borderRight: border }} onClick={() => this.onClick(2, 0)}>
-									{this.state.ticTacToe[2] && this.state.ticTacToe[2][0] ? this.state.ticTacToe[2][0].symbol : ''}
-								</div>
+	private renderTicTacToeGrid(): JSX.Element {
+		const border = '8px solid #818182';
+		return (
+			<div className={this.state.strike.length ? 'strike' : ''}>
+				<div style={{ display: 'flex' }}>
+					<div className={this.getClassName(0, 0)} style={{ borderBottom: border, borderRight: border }} onClick={() => this.onClick(0, 0)}>
+						{this.state.ticTacToe[0] && this.state.ticTacToe[0][0] ? this.state.ticTacToe[0][0].symbol : ''}
+					</div>
+					<div className={this.getClassName(0, 1)} style={{ borderBottom: border, borderRight: border }} onClick={() => this.onClick(0, 1)}>
+						{this.state.ticTacToe[0] && this.state.ticTacToe[0][1] ? this.state.ticTacToe[0][1].symbol : ''}
+					</div>
 
-								<div className={this.getClassName(2, 1)} style={{ borderRight: border }} onClick={() => this.onClick(2, 1)}>
-									{this.state.ticTacToe[2] && this.state.ticTacToe[2][1] ? this.state.ticTacToe[2][1].symbol : ''}
-								</div>
+					<div className={this.getClassName(0, 2)} style={{ borderBottom: border }} onClick={() => this.onClick(0, 2)}>
+						{this.state.ticTacToe[0] && this.state.ticTacToe[0][2] ? this.state.ticTacToe[0][2].symbol : ''}
+					</div>
+				</div>
+				<div style={{ display: 'flex' }}>
+					<div className={this.getClassName(1, 0)} style={{ borderBottom: border, borderRight: border }} onClick={() => this.onClick(1, 0)}>
+						{this.state.ticTacToe[1] && this.state.ticTacToe[1][0] ? this.state.ticTacToe[1][0].symbol : ''}
+					</div>
 
-								<div className={this.getClassName(2, 2)} onClick={() => this.onClick(2, 2)}>
-									{this.state.ticTacToe[2] && this.state.ticTacToe[2][2] ? this.state.ticTacToe[2][2].symbol : ''}
-								</div>
-							</div>
-						</div>
+					<div className={this.getClassName(1, 1)} style={{ borderBottom: border, borderRight: border }} onClick={() => this.onClick(1, 1)}>
+						{this.state.ticTacToe[1] && this.state.ticTacToe[1][1] ? this.state.ticTacToe[1][1].symbol : ''}
+					</div>
+
+					<div className={this.getClassName(1, 2)} style={{ borderBottom: border }} onClick={() => this.onClick(1, 2)}>
+						{this.state.ticTacToe[1] && this.state.ticTacToe[1][2] ? this.state.ticTacToe[1][2].symbol : ''}
+					</div>
+				</div>
+				<div style={{ display: 'flex' }}>
+					<div className={this.getClassName(2, 0)} style={{ borderRight: border }} onClick={() => this.onClick(2, 0)}>
+						{this.state.ticTacToe[2] && this.state.ticTacToe[2][0] ? this.state.ticTacToe[2][0].symbol : ''}
+					</div>
+
+					<div className={this.getClassName(2, 1)} style={{ borderRight: border }} onClick={() => this.onClick(2, 1)}>
+						{this.state.ticTacToe[2] && this.state.ticTacToe[2][1] ? this.state.ticTacToe[2][1].symbol : ''}
+					</div>
+
+					<div className={this.getClassName(2, 2)} onClick={() => this.onClick(2, 2)}>
+						{this.state.ticTacToe[2] && this.state.ticTacToe[2][2] ? this.state.ticTacToe[2][2].symbol : ''}
 					</div>
 				</div>
 			</div>
@@ -152,31 +201,39 @@ class TicTacToe extends React.Component<TicTacToeProperties, TicTacToeState> {
 	}
 
 	private onClick(row: number, column: number): void {
-		if (!this.state.ticTacToe[row]) {
-			this.state.ticTacToe[row] = [];
+		if (this.state.ticTacToe[row][column] || this.state.strike.length || this.isDrawn()) {
+			return;
 		}
 		this.state.ticTacToe[row][column] = this.state.currentTurn;
-		if (this.state.ticTacToe[row].length === 3 && this.state.ticTacToe[row].every(value => value && value.symbol === this.state.currentTurn.symbol)) {
+		if (this.state.ticTacToe[row].every(value => value && value.symbol === this.state.currentTurn.symbol)) {
 			this.state.strike = [{ row, column: 0 }, { row, column: 1 }, { row, column: 2 }]
-		} else if (this.state.ticTacToe.length === 3 && this.state.ticTacToe.every(value => value[column] && value[column].symbol === this.state.currentTurn.symbol)) {
+		} else if (this.state.ticTacToe.every(value => value[column] && value[column].symbol === this.state.currentTurn.symbol)) {
 			this.state.strike = [{ row: 0, column }, { row: 1, column }, { row: 2, column }]
 		} else {
 			if ((row === 0 && column === 0) || (row === 1 && column === 1) || (row === 2 && column === 2)) {
-				if (this.state.ticTacToe[0] && this.state.ticTacToe[0][0] && this.state.ticTacToe[0][0].symbol === this.state.currentTurn.symbol
-					&& this.state.ticTacToe[1] && this.state.ticTacToe[1][1] && this.state.ticTacToe[1][1].symbol === this.state.currentTurn.symbol
-					&& this.state.ticTacToe[2] && this.state.ticTacToe[2][2] && this.state.ticTacToe[2][2].symbol === this.state.currentTurn.symbol) {
+				if (this.state.ticTacToe[0][0] && this.state.ticTacToe[0][0].symbol === this.state.currentTurn.symbol
+					&& this.state.ticTacToe[1][1] && this.state.ticTacToe[1][1].symbol === this.state.currentTurn.symbol
+					&& this.state.ticTacToe[2][2] && this.state.ticTacToe[2][2].symbol === this.state.currentTurn.symbol) {
 					this.state.strike = [{ row: 0, column: 0 }, { row: 1, column: 1 }, { row: 2, column: 2 }]
 				}
 			}
 			if ((row === 0 && column === 2) || (row === 1 && column === 1) || (row === 2 && column === 0)) {
-				if (this.state.ticTacToe[0] && this.state.ticTacToe[0][2] && this.state.ticTacToe[0][2].symbol === this.state.currentTurn.symbol
-					&& this.state.ticTacToe[1] && this.state.ticTacToe[1][1] && this.state.ticTacToe[1][1].symbol === this.state.currentTurn.symbol
-					&& this.state.ticTacToe[2] && this.state.ticTacToe[2][0] && this.state.ticTacToe[2][0].symbol === this.state.currentTurn.symbol) {
+				if (this.state.ticTacToe[0][2] && this.state.ticTacToe[0][2].symbol === this.state.currentTurn.symbol
+					&& this.state.ticTacToe[1][1] && this.state.ticTacToe[1][1].symbol === this.state.currentTurn.symbol
+					&& this.state.ticTacToe[2][0] && this.state.ticTacToe[2][0].symbol === this.state.currentTurn.symbol) {
 					this.state.strike = [{ row: 0, column: 2 }, { row: 1, column: 1 }, { row: 2, column: 0 }]
 				}
 			}
 		}
-		this.state.currentTurn = this.state.player1 === this.state.currentTurn ? this.state.player2 : this.state.player1;
+		if (this.state.strike.length) {
+			this.state.currentTurn.points++;
+		} else {
+			this.state.currentTurn = this.state.player1 === this.state.currentTurn ? this.state.player2 : this.state.player1;
+		}
 		this.setState(this.state);
+	}
+
+	private isDrawn(): boolean {
+		return this.state.ticTacToe.every(row => row.every(col => !!col));
 	}
 }
