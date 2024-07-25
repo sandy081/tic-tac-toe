@@ -6,7 +6,7 @@ import { Players } from './players';
 
 const app = express();
 
-// View configuration
+// View configuration updated
 app.engine('handlebars', exphbs({ compilerOptions: undefined }));
 app.set('view engine', 'handlebars');
 
