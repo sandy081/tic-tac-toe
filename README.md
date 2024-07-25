@@ -1,3 +1,1 @@
 # Tic Tac Toe
-
-Hello
