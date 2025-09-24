@@ -1,0 +1,130 @@
+{
+	"servers": [
+		{
+			"server": {
+				"created_at": "2025-09-16T00:29:06Z",
+				"description": "Query Eventhouse/ADX with KQL and manage Eventstreams.",
+				"id": "6d7e06b1-7e1c-4ffc-a5f2-e77aeb2aa471",
+				"name": "microsoft/fabric-rti-mcp",
+				"packages": [
+					{
+						"environment_variables": [
+							{
+								"name": "KUSTO_SERVICE_URI",
+								"value": "{kusto_service_uri}",
+								"variables": {
+									"kusto_service_uri": {
+										"description": "Default Kusto cluster URI (e.g., https://help.kusto.windows.net/ or your cluster)."
+									}
+								}
+							},
+							{
+								"name": "KUSTO_SERVICE_DEFAULT_DB",
+								"value": "{kusto_default_db}",
+								"variables": {
+									"kusto_default_db": {
+										"description": "Default database name for Kusto queries (e.g., Samples)."
+									}
+								}
+							},
+							{
+								"name": "AZ_OPENAI_EMBEDDING_ENDPOINT",
+								"value": "{az_openai_embedding_endpoint}",
+								"variables": {
+									"az_openai_embedding_endpoint": {
+										"description": "Azure OpenAI embeddings endpoint for shots/semantic search (format: https://\u003cresource\u003e.openai.azure.com/openai/deployments/\u003cname\u003e/embeddings?api-version=\u003cversion\u003e;impersonate)."
+									}
+								}
+							},
+							{
+								"name": "KUSTO_KNOWN_SERVICES",
+								"value": "{kusto_known_services_json}",
+								"variables": {
+									"kusto_known_services_json": {
+										"description": "JSON array of preconfigured Kusto services (e.g., [{\"service_uri\":\"https://cluster.kusto.windows.net\",\"default_database\":\"DB\"}])."
+									}
+								}
+							},
+							{
+								"name": "KUSTO_EAGER_CONNECT",
+								"value": "{kusto_eager_connect}",
+								"variables": {
+									"kusto_eager_connect": {
+										"description": "Whether to eagerly connect to the default service on startup (true/false)."
+									}
+								}
+							},
+							{
+								"name": "KUSTO_ALLOW_UNKNOWN_SERVICES",
+								"value": "{kusto_allow_unknown_services}",
+								"variables": {
+									"kusto_allow_unknown_services": {
+										"description": "Allow connections to services not listed in KUSTO_KNOWN_SERVICES (true/false)."
+									}
+								}
+							},
+							{
+								"name": "FABRIC_API_BASE",
+								"value": "{fabric_api_base}",
+								"variables": {
+									"fabric_api_base": {
+										"description": "Base URL for Fabric APIs (default https://api.fabric.microsoft.com/v1)."
+									}
+								}
+							}
+						],
+						"name": "microsoft-fabric-rti-mcp",
+						"registry_name": "pypi",
+						"runtime_arguments": [
+							{
+								"format": "string",
+								"is_required": true,
+								"type": "positional",
+								"value": "microsoft-fabric-rti-mcp",
+								"value_hint": "package_spec"
+							}
+						],
+						"runtime_hint": "uvx",
+						"version": "0.1.0"
+					}
+				],
+				"repository": {
+					"id": "992876953",
+					"readme": "[![Install with UVX in VS Code](https://img.shields.io/badge/VS_Code-Install_Microsoft_Fabric_RTI_MCP_Server-0098FF?style=flat-square\u0026logo=visualstudiocode\u0026logoColor=white)](https://insiders.vscode.dev/redirect/mcp/install?name=ms-fabric-rti\u0026config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22microsoft-fabric-rti-mcp%22%5D%7D) [![PyPI Downloads](https://static.pepy.tech/badge/microsoft-fabric-rti-mcp)](https://pepy.tech/projects/microsoft-fabric-rti-mcp)\n## 🎯 Overview\n\nA Model Context Protocol (MCP) server implementation for [Microsoft Fabric Real-Time Intelligence (RTI)](https://aka.ms/fabricrti). \nThis server enables AI agents to interact with Fabric RTI services by providing tools through the MCP interface, allowing for seamless data querying and analysis capabilities.\n\n\u003e [!NOTE]  \n\u003e This project is in Public Preview and implementation may significantly change prior to General Availability.\n\n### 🔍 How It Works\n\nThe Fabric RTI MCP Server acts as a bridge between AI agents and Microsoft Fabric RTI services:\n\n- 🔄 **MCP Protocol**: Uses the Model Context Protocol to expose Fabric RTI capabilities as tools\n- 🏗️ **Natural Language to KQL**: AI agents can translate natural language requests into KQL queries\n- 💡 **Secure Authentication**: Leverages Azure Identity for seamless, secure access to your resources\n- ⚡ **Real-time Data Access**: Direct connection to Eventhouse and Eventstreams for live data analysis\n\n### ✨ Supported Services\n\n**Eventhouse (Kusto)**: Execute KQL queries against Microsoft Fabric RTI [Eventhouse](https://aka.ms/eventhouse) and [Azure Data Explorer (ADX)](https://aka.ms/adx).\n\n**Eventstreams**: Manage Microsoft Fabric [Eventstreams](https://learn.microsoft.com/en-us/fabric/real-time-intelligence/eventstream/eventstream-introduction) for real-time data processing:\n- List Eventstreams in workspaces\n- Get Eventstream details and definitions\n\n## 🚧 Coming soon\n- **Activator**\n- **Other RTI items**\n\n### 🔍 Example Prompts\n\n**Eventhouse Analytics:**\n- \"Get databases in my Eventhouse\"\n- \"Sample 10 rows from table 'StormEvents' in Eventhouse\"\n- \"What can you tell me about StormEvents data?\"\n- \"Analyze the StormEvents to come up with trend analysis across past 10 years of data\"\n- \"Analyze the commands in 'CommandExecution' table and categorize them as low/medium/high risks\"\n\n**Eventstream Management:**\n- \"List all Eventstreams in my workspace\"\n- \"Show me the details of my IoT data Eventstream\"\n\n\n### Available tools \n\n#### Eventhouse (Kusto) - 12 Tools:\n- **`kusto_known_services`** - List all available Kusto services configured in the MCP\n- **`kusto_query`** - Execute KQL queries on the specified database\n- **`kusto_command`** - Execute Kusto management commands (destructive operations)\n- **`kusto_list_databases`** - List all databases in the Kusto cluster\n- **`kusto_list_tables`** - List all tables in a specified database\n- **`kusto_get_entities_schema`** - Get schema information for all entities (tables, materialized views, functions) in a database\n- **`kusto_get_table_schema`** - Get detailed schema information for a specific table\n- **`kusto_get_function_schema`** - Get schema information for a specific function, including parameters and output schema\n- **`kusto_sample_table_data`** - Retrieve random sample records from a specified table\n- **`kusto_sample_function_data`** - Retrieve random sample records from the result of a function call\n- **`kusto_ingest_inline_into_table`** - Ingest inline CSV data into a specified table\n- **`kusto_get_shots`** - Retrieve semantically similar query examples from a shots table using AI embeddings\n\n#### Eventstreams - 6 Tools:\n- **`list_eventstreams`** - List all Eventstreams in your Fabric workspace\n- **`get_eventstream`** - Get detailed information about a specific Eventstream\n- **`get_eventstream_definition`** - Retrieve complete JSON definition of an Eventstream\n\n## Getting Started\n\n### Prerequisites\n1. Install either the stable or Insiders release of VS Code:\n   * [💫 Stable release](https://code.visualstudio.com/download)\n   * [🔮 Insiders release](https://code.visualstudio.com/insiders)\n2. Install the [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot) and [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat) extensions\n3. Install `uv`  \n```ps\npowershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"\n```  \nor, check here for [other install options](https://docs.astral.sh/uv/getting-started/installation/#__tabbed_1_2)\n\n4. Open VS Code in an empty folder\n\n\n### Install from PyPI (Pip)\nThe Fabric RTI MCP Server is available on [PyPI](https://pypi.org/project/microsoft-fabric-rti-mcp/), so you can install it using pip. This is the easiest way to install the server.\n\n#### From VS Code\n    1. Open the command palette (Ctrl+Shift+P) and run the command `MCP: Add Server`\n    2. Select install from Pip\n    3. When prompted, enter the package name `microsoft-fabric-rti-mcp`\n    4. Follow the prompts to install the package and add it to your settings.json or your mcp.json file\n\nThe process should end with the below settings in your `settings.json` or your `mcp.json` file.\n\n#### settings.json\n```json\n{\n    \"mcp\": {\n        \"server\": {\n            \"fabric-rti-mcp\": {\n                \"command\": \"uvx\",\n                \"args\": [\n                    \"microsoft-fabric-rti-mcp\"\n                ],\n                \"env\": {\n                    \"KUSTO_SERVICE_URI\": \"https://help.kusto.windows.net/\",\n                    \"KUSTO_SERVICE_DEFAULT_DB\": \"Samples\"\n                }\n            }\n        }\n    }\n}\n```\n\n\u003e **Note**: All environment variables are optional. The `KUSTO_SERVICE_URI` and `KUSTO_SERVICE_DEFAULT_DB` provide default cluster and database settings. The `AZ_OPENAI_EMBEDDING_ENDPOINT` is only needed for semantic search functionality in the `kusto_get_shots` tool.\n\n### 🔧 Manual Install (Install from source)  \n\n1. Make sure you have Python 3.10+ installed properly and added to your PATH.\n2. Clone the repository\n3. Install the dependencies (`pip install .` or `uv tool install .`)\n4. Add the settings below into your vscode `settings.json` or your `mcp.json` file. \n5. Modify the path to match the repo location on your machine.\n6. Modify the cluster uri in the settings to match your cluster.\n7. Modify the cluster default database in the settings to match your database.\n8. Modify the embeddings endpoint in the settings to match yours. This step is optional and needed only in case you supply a shots table\n\n```json\n{\n    \"mcp\": {\n        \"servers\": {\n            \"fabric-rti-mcp\": {\n                \"command\": \"uv\",\n                \"args\": [\n                    \"--directory\",\n                    \"C:/path/to/fabric-rti-mcp/\",\n                    \"run\",\n                    \"-m\",\n                    \"fabric_rti_mcp.server\"\n                ],\n                \"env\": {\n                    \"KUSTO_SERVICE_URI\": \"https://help.kusto.windows.net/\",\n                    \"KUSTO_SERVICE_DEFAULT_DB\": \"Samples\"\n                }\n            }\n        }\n    }\n}\n```\n\n## 🐛 Debugging the MCP Server locally\nAssuming you have python installed and the repo cloned:\n\n### Install locally\n```bash\npip install -e \".[dev]\"\n```\n\n### Configure\n\nFollow the [Manual Install](#🔧-manual-install-install-from-source) instructions.\n\n### Attach the debugger\nUse the `Python: Attach` configuration in your `launch.json` to attach to the running server. \nOnce VS Code picks up the server and starts it, navigate to its output: \n1. Open command palette (Ctrl+Shift+P) and run the command `MCP: List Servers`\n2. Navigate to `fabric-rti-mcp` and select `Show Output`\n3. Pick up the process ID (PID) of the server from the output\n4. Run the `Python: Attach` configuration in your `launch.json` file, and paste the PID of the server in the prompt\n5. The debugger will attach to the server process, and you can start debugging\n\n\n## 🧪 Test the MCP Server\n\n1. Open GitHub Copilot in VS Code and [switch to Agent mode](https://code.visualstudio.com/docs/copilot/chat/chat-agent-mode)\n2. You should see the Fabric RTI MCP Server in the list of tools\n3. Try a prompt that tells the agent to use the Eventhouse tools, such as \"List my Kusto tables\"\n4. The agent should be able to use the Fabric RTI MCP Server tools to complete your query\n\n\n## ⚙️ Configuration\n\nThe MCP server can be configured using the following environment variables:\n\n### Required Environment Variables\nNone - the server will work with default settings for demo purposes.\n\n### Optional Environment Variables\n\n| Variable | Service | Description | Default | Example |\n|----------|---------|-------------|---------|---------|\n| `KUSTO_SERVICE_URI` | Kusto | Default Kusto cluster URI | None | `https://mycluster.westus.kusto.windows.net` |\n| `KUSTO_SERVICE_DEFAULT_DB` | Kusto | Default database name for Kusto queries | `NetDefaultDB` | `MyDatabase` |\n| `AZ_OPENAI_EMBEDDING_ENDPOINT` | Kusto | Azure OpenAI embedding endpoint for semantic search in `kusto_get_shots` | None | `https://your-resource.openai.azure.com/openai/deployments/text-embedding-ada-002/embeddings?api-version=2024-10-21;impersonate` |\n| `KUSTO_KNOWN_SERVICES` | Kusto | JSON array of preconfigured Kusto services | None | `[{\"service_uri\":\"https://cluster1.kusto.windows.net\",\"default_database\":\"DB1\",\"description\":\"Prod\"}]` |\n| `KUSTO_EAGER_CONNECT` | Kusto | Whether to eagerly connect to default service on startup (not recommended) | `false` | `true` or `false` |\n| `KUSTO_ALLOW_UNKNOWN_SERVICES` | Kusto | Security setting to allow connections to services not in `KUSTO_KNOWN_SERVICES` | `true` | `true` or `false` |\n| `FABRIC_API_BASE` | Global | Base URL for Microsoft Fabric API | `https://api.fabric.microsoft.com/v1` | `https://api.fabric.microsoft.com/v1` |\n\n### Embedding Endpoint Configuration\n\nThe `AZ_OPENAI_EMBEDDING_ENDPOINT` is used by the semantic search functionality (e.g., `kusto_get_shots` function) to find similar query examples. \n\n**Format Requirements:**\n```\nhttps://{your-openai-resource}.openai.azure.com/openai/deployments/{deployment-name}/embeddings?api-version={api-version};impersonate\n```\n\n**Components:**\n- `{your-openai-resource}`: Your Azure OpenAI resource name\n- `{deployment-name}`: Your text embedding deployment name (e.g., `text-embedding-ada-002`)\n- `{api-version}`: API version (e.g., `2024-10-21`, `2023-05-15`)\n- `;impersonate`: Authentication method (you might use managed identity)\n\n**Authentication Requirements:**\n- Your Azure identity must have access to the OpenAI resource\n- In case using managed identity, the OpenAI resource must should be configured to accept managed identity authentication\n- The deployment must exist and be accessible\n\n### Configuration of Shots Table\nThe `kusto_get_shots` tool retrieves shots that are most similar to your prompt from the shots table. This function requires configuration of:\n- **Shots table**: Should have an \"EmbeddingText\" (string) column containing the natural language prompt, \"AugmentedText\" (string) column containing the respective KQL, and \"EmbeddingVector\" (dynamic) column containing the embedding vector of the EmbeddingText.\n- **Azure OpenAI embedding endpoint**: Used to create embedding vectors for your prompt. Note that this endpoint must use the same model that was used for creating the \"EmbeddingVector\" column in the shots table.\n\n## 🔑 Authentication\n\nThe MCP Server seamlessly integrates with your host operating system's authentication mechanisms. We use Azure Identity via [`DefaultAzureCredential`](https://learn.microsoft.com/en-us/azure/developer/python/sdk/authentication/credential-chains?tabs=dac), which tries these authentication methods in order:\n\n1. **Environment Variables** (`EnvironmentCredential`) - Perfect for CI/CD pipelines\n2. **Visual Studio** (`VisualStudioCredential`) - Uses your Visual Studio credentials\n3. **Azure CLI** (`AzureCliCredential`) - Uses your existing Azure CLI login\n4. **Azure PowerShell** (`AzurePowerShellCredential`) - Uses your Az PowerShell login\n5. **Azure Developer CLI** (`AzureDeveloperCliCredential`) - Uses your azd login\n6. **Interactive Browser** (`InteractiveBrowserCredential`) - Falls back to browser-based login if needed\n\nIf you're already logged in through any of these methods, the Fabric RTI MCP Server will automatically use those credentials.\n\n## 🛡️ Security Note\n\nYour credentials are always handled securely through the official [Azure Identity SDK](https://github.com/Azure/azure-sdk-for-net/blob/main/sdk/identity/Azure.Identity/README.md) - **we never store or manage tokens directly**.\n\nMCP as a phenomenon is very novel and cutting-edge. As with all new technology standards, consider doing a security review to ensure any systems that integrate with MCP servers follow all regulations and standards your system is expected to adhere to. This includes not only the Azure MCP Server, but any MCP client/agent that you choose to implement down to the model provider.\n\n\n## 👥 Contributing\n\nThis project welcomes contributions and suggestions.  Most contributions require you to agree to a\nContributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us\nthe rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.\n\nWhen you submit a pull request, a CLA bot will automatically determine whether you need to provide\na CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions\nprovided by the bot. You will only need to do this once across all repos using our CLA.\n\n## 🤝 Code of Conduct\n\nThis project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).\nFor more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or\ncontact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.\n\n## Data Collection\n\nThe software may collect information about you and your use of the software and send it to Microsoft. Microsoft may use this information to provide services and improve our products and services. You may turn off the telemetry as described in the repository. There are also some features in the software that may enable you and Microsoft to collect data from users of your applications. If you use these features, you must comply with applicable law, including providing appropriate notices to users of your applications together with a copy of Microsoft’s privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data collection and use in the help documentation and our privacy statement. Your use of the software operates as your consent to these practices.\n\n\n## Trademarks\n\nThis project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft \ntrademarks or logos is subject to and must follow \n[Microsoft's Trademark \u0026 Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).\nUse of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.\nAny use of third-party trademarks or logos are subject to those third-party's policies.\n",
+					"source": "github",
+					"url": "https://github.com/microsoft/fabric-rti-mcp"
+				},
+				"updated_at": "2025-09-16T00:29:06Z",
+				"version_detail": {
+					"is_latest": true,
+					"release_date": "2025-09-09T10:55:22.912213Z",
+					"version": "1.0.0"
+				}
+			},
+			"x-github": {
+				"display_name": "Fabric Real-Time Intelligence",
+				"is_in_organization": true,
+				"license": "MIT License",
+				"name": "fabric-rti-mcp",
+				"name_with_owner": "microsoft/fabric-rti-mcp",
+				"opengraph_image_url": "https://opengraph.githubassets.com/311dff1a9868ea9fccec1e0522fcd5a7ae6570bdecd9c930f9b6ea0ffc39324d/microsoft/fabric-rti-mcp",
+				"owner_avatar_url": "https://avatars.githubusercontent.com/u/6154722?v=4",
+				"primary_language": "Python",
+				"primary_language_color": "#3572A5",
+				"pushed_at": "2025-09-15T21:16:51Z",
+				"stargazer_count": 54,
+				"uses_custom_opengraph_image": false
+			},
+			"x-io.modelcontextprotocol.registry": {
+				"id": "6d7e06b1-7e1c-4ffc-a5f2-e77aeb2aa471",
+				"is_latest": true,
+				"published_at": "2025-09-09T10:55:22.912213Z",
+				"release_date": "2025-09-09T10:55:22.912213Z",
+				"updated_at": "2025-09-09T10:55:22.912213Z"
+			}
+		}
+	],
+	"metadata": {
+		"count": 1
+	}
+}
