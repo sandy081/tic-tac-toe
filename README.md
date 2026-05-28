@@ -1,3 +1,3 @@
 # Tic Tac Toe
 
-Hello
+This is Tic Tac Toe application
