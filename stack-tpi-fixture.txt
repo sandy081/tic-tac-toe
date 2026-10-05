@@ -1,2 +1,3 @@
 Disposable fixture for stacked PR TPI #9011.
 Bottom change: one standalone text file, no application behavior changes.
+Conflicting base addition for the disposable merge-conflict test.
