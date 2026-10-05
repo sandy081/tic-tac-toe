@@ -1,0 +1,2 @@
+Disposable independent PR for testing invalid stack selection.
+This branch targets master and is not chained to the bottom or top test branch.
