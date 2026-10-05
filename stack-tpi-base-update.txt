@@ -1,0 +1,1 @@
+Disposable base update for testing strict behind-branch merge gating.
