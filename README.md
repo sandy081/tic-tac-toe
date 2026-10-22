@@ -2,4 +2,4 @@
 
 This is Tic Tac Toe application
 
-Scratch change for a live Agent Merge check (C33); this PR is temporary and will be closed.
+Scratch change for a live Agent Merge check (C33); this PR is temporary (temporary)
